@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Question Analyzer - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <link rel="icon" href="{{ url_for('static', filename='img/logo.svg') }}" type="image/svg+xml" />
+  </head>
+  <body class="min-h-screen relative bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 text-white overflow-x-hidden">
+    <!-- Animated Background Glows -->
+    <div class="pointer-events-none absolute inset-0 overflow-hidden">
+      <div class="bg-glow top-16 right-24 w-72 h-72"></div>
+      <div class="bg-glow bg-glow-purple bottom-10 left-24 w-[32rem] h-[32rem] opacity-70"></div>
+      <div class="bg-glow bg-glow-cyan top-1/3 left-1/2 w-40 h-40"></div>
+    </div>
+
+    <!-- Top Bar -->
+    <header class="relative z-10 border-b border-white/10 bg-black/10 backdrop-blur">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="{{ url_for('static', filename='img/logo.svg') }}" class="w-8 h-8" alt="QA Analyzer" />
+          <div class="">
+            <div class="text-xl font-semibold">AI Question Quality Analyzer</div>
+            <div class="text-sm text-white/60">Analyze • Classify • Improve</div>
+          </div>
+        </div>
+        <div class="hidden sm:flex items-center gap-2">
+          <a href="/logout" class="px-3 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-sm transition">Logout</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="relative z-10 max-w-7xl mx-auto px-6 py-12">
+      <!-- Hero -->
+      <section class="text-center mb-14 animate-fade-in">
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-tight">
+          <span class="block bg-gradient-to-r from-indigo-300 via-purple-300 to-cyan-300 bg-clip-text text-transparent animate-gradient">Welcome to AI Question Analysis</span>
+        </h1>
+        <p class="mt-4 text-lg sm:text-xl text-white/80 max-w-3xl mx-auto">Transform your educational content with AI-powered question analysis. Upload your questions and get comprehensive insights into difficulty levels, cognitive complexity, and clarity metrics.</p>
+        <div class="mt-8">
+          <a href="/dashboard" class="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 hover:from-indigo-600 hover:via-purple-600 hover:to-cyan-600 transition font-semibold shadow-lg shadow-indigo-500/20">
+            <span>Go to Dashboard</span>
+            <span>→</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Feature Cards Row 1 -->
+      <section class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="rounded-2xl p-6 bg-gray-900/40 border border-white/10 transition transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10">
+          <div class="text-2xl mb-2">📊</div>
+          <div class="font-semibold text-xl">Difficulty Analysis</div>
+          <p class="text-white/70 mt-1 text-base">Automatically categorize questions into Easy, Medium, and Hard using simple yet effective heuristics to guide balanced assessment creation.</p>
+        </div>
+        <div class="rounded-2xl p-6 bg-gray-900/40 border border-white/10 transition transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10">
+          <div class="text-2xl mb-2">🧠</div>
+          <div class="font-semibold text-xl">Bloom's Taxonomy</div>
+          <p class="text-white/70 mt-1 text-base">Classify questions into Recall, Apply, or Analyze to align with cognitive levels and support constructive alignment.</p>
+        </div>
+        <div class="rounded-2xl p-6 bg-gray-900/40 border border-white/10 transition transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10">
+          <div class="text-2xl mb-2">✨</div>
+          <div class="font-semibold text-xl">Clarity Score</div>
+          <p class="text-white/70 mt-1 text-base">Measure clarity and readability with concise feedback on simplifying language and reducing ambiguity.</p>
+        </div>
+      </section>
+
+      <!-- Feature Cards Row 2 (like the small cards in the image) -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+        <div class="rounded-2xl p-5 bg-gray-900/40 border border-white/10 transition transform hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10">
+          <div class="flex items-center gap-2 text-white/90 font-semibold">
+            <span>🗂️</span>
+            <span class="text-lg">Analytics Dashboard</span>
+          </div>
+          <p class="text-white/70 mt-1 text-base">Visualize your question data with interactive charts and detailed breakdowns to identify patterns and improve your assessment quality.</p>
+        </div>
+        <div class="rounded-2xl p-5 bg-gray-900/40 border border-white/10 transition transform hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10">
+          <div class="flex items-center gap-2 text-white/90 font-semibold">
+            <span>⚡</span>
+            <span class="text-lg">Instant Results</span>
+          </div>
+          <p class="text-white/70 mt-1 text-base">Get immediate feedback on your questions with near real-time processing and comprehensive analysis reports.</p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

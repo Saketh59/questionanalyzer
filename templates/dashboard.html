@@ -39,12 +39,12 @@
           </div>
 
           <div class="mt-8">
-            <div class="text-sm text-white/80 mb-2">Or upload a question paper (PDF) or image to analyze</div>
+            <div class="text-sm text-white/80 mb-2">Or upload a question paper (PDF) to analyze</div>
             <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-              <input id="qa-file" type="file" accept="application/pdf,image/*" class="block w-full text-sm text-white/80 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500" />
+              <input id="qa-file" type="file" accept="application/pdf" class="block w-full text-sm text-white/80 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500" />
               <button id="analyzeFileBtn" class="px-6 py-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition">Analyze File</button>
             </div>
-            <p class="mt-2 text-xs text-white/50">Images will be OCR'd. PDFs will be parsed for text. Extracted lines ending with '?' or long statements will be analyzed.</p>
+            <p class="mt-2 text-xs text-white/50">PDFs will be parsed for text. Extracted lines ending with '?' or long statements will be analyzed.</p>
           </div>
 
           <div id="analyzeResults" class="mt-6 hidden">
@@ -121,6 +121,18 @@
               </select>
             </div>
 
+            <div>
+              <label class="block text-sm text-white/80">Format</label>
+              <select id="gen-format" class="w-full px-4 py-3 rounded-lg bg-gray-800 border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="All" selected>All</option>
+                <option value="MCQs">MCQs</option>
+                <option value="FillInTheBlanks">Fill in the Blanks</option>
+                <option value="TrueFalse">True / False</option>
+                <option value="ShortAnswer">Short Answer</option>
+                <option value="CaseStudy">Case Study</option>
+              </select>
+            </div>
+
             <div class="sm:col-span-2 flex items-center justify-between mt-2">
               <button id="generateBtn" class="px-6 py-3 rounded-lg gradient-button">Generate</button>
               <button id="clearGenBtn" class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">Clear</button>
@@ -143,6 +155,37 @@
             <div class="mt-6 flex items-center gap-3">
               <button id="saveGenerateBtn" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition">Save</button>
               <button id="exportGenerateBtn" class="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition">Export CSV</button>
+            </div>
+          </div>
+
+          <hr class="my-8 border-white/10" />
+          <div class="space-y-2">
+            <h3 class="text-xl font-semibold">Generate Multi-Format</h3>
+            <p class="text-white/60 text-sm">Creates MCQs, Fill-in-the-blanks, True/False, Short Answer, and Case Study from your paragraph.</p>
+          </div>
+          <div id="formatsResults" class="mt-4 hidden space-y-6">
+            <div id="fmt-mcqs-wrap">
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-semibold">MCQs</h4>
+                <button id="toggleAnswersBtn" class="px-3 py-1 text-sm rounded bg-gray-800 hover:bg-gray-700">Toggle Answers</button>
+              </div>
+              <div id="fmt-mcqs" class="mt-2 space-y-3"></div>
+            </div>
+            <div id="fmt-fib-wrap">
+              <h4 class="text-lg font-semibold">Fill in the Blanks</h4>
+              <div id="fmt-fib" class="mt-2 space-y-3"></div>
+            </div>
+            <div id="fmt-tf-wrap">
+              <h4 class="text-lg font-semibold">True / False</h4>
+              <div id="fmt-tf" class="mt-2 space-y-3"></div>
+            </div>
+            <div id="fmt-sa-wrap">
+              <h4 class="text-lg font-semibold">Short Answer</h4>
+              <div id="fmt-sa" class="mt-2 space-y-3"></div>
+            </div>
+            <div id="fmt-cs-wrap">
+              <h4 class="text-lg font-semibold">Case Study</h4>
+              <div id="fmt-cs" class="mt-2 space-y-3"></div>
             </div>
           </div>
         </section>

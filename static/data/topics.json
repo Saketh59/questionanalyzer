@@ -1,0 +1,39 @@
+{
+  "Mathematics": {
+    "Algebra": "algebra|equation|polynomial|matrix|vector|determinant|eigen|linear|system of equations|complex number|quadratic",
+    "Geometry": "geometry|triangle|circle|angle|area|perimeter|coordinate|polygon|theorem|similarity|congruence",
+    "Calculus — Differentiation": "derivative|differentiation|chain rule|product rule|quotient rule|maxima|minima|taylor|mean value",
+    "Calculus — Integration": "integral|integration|definite integral|indefinite integral|substitution|partial fractions|integration by parts|riemann|improper integral",
+    "Calculus — Limits": "limit|continuity|l'hospital|asymptote|infinite series|convergence|power series",
+    "Differential Equations": "differential equation|ode|pde|first order|second order|laplace transform|fourier series|fourier transform|initial value|boundary value",
+    "Vector Calculus": "gradient|divergence|curl|line integral|surface integral|greens theorem|stokes|gauss divergence",
+    "Probability": "probability|random|distribution|bayes|likelihood|event|odds|conditional|binomial|poisson|normal",
+    "Statistics": "mean|median|mode|variance|standard deviation|regression|correlation|anova|hypothesis|confidence interval|sampling|estimator",
+    "Trigonometry": "trigonometry|sine|cosine|tangent|identity|angle addition|triangle",
+    "Matrices": "matrix|determinant|inverse|rank|eigenvalue|eigenvector|diagonalization|system of linear equations"
+  },
+  "Physics": {
+    "Mechanics": "newton|force|motion|velocity|acceleration|kinematics|dynamics|work|energy|power|momentum|collisions|projectile|circular motion|shm|simple harmonic",
+    "Electric Circuits — Basics": "ohm|resistance|resistor|voltage|current|power|circuit|series|parallel|network theorems|thevenin|norton|superposition",
+    "Electric Circuits — Kirchhoff": "kirchhoff|kcl|kvl",
+    "Electromagnetism — Induction": "electromagnetic induction|faraday|lenz|induced emf|flux|mutual inductance|self inductance",
+    "Electromagnetism — Fields": "electric field|magnetic field|gauss law|ampere|biot savart|lorentz force|capacitor|inductor",
+    "AC Circuits": "ac circuit|phasor|impedance|reactance|r-l-c|resonance|power factor",
+    "Waves & Optics": "wave|frequency|wavelength|interference|diffraction|doppler|optics|lens|mirror|refraction|polarization",
+    "Thermodynamics": "heat|temperature|entropy|enthalpy|thermodynamics|gas|expansion|carnot|first law|second law",
+    "Modern Physics": "quantum|relativity|photoelectric|nuclear|atomic|radioactive|uncertainty|semiconductor|band gap|bohr"
+  },
+  "Chemistry": {
+    "Organic": "alkane|alkene|alkyne|benzene|ester|ketone|aldehyde|amine|reaction mechanism|stereochemistry",
+    "Inorganic": "periodic|transition metal|complex|coordination|salt|oxide|halide|acid|base",
+    "Physical": "thermodynamics|equilibrium|kinetics|electrochemistry|phase|solution|colligative",
+    "Analytical": "titration|chromatography|spectroscopy|mass spectrometry|qualitative|quantitative"
+  },
+  "ComputerScience": {
+    "Programming": "program|code|python|java|c\\+\\+|loop|function|class|object|recursion",
+    "Data Structures": "array|list|stack|queue|tree|graph|hash|heap|trie",
+    "Algorithms": "algorithm|complexity|sort|search|dynamic programming|greedy|divide and conquer",
+    "Databases": "database|sql|query|table|schema|transaction|index|normalization|acid",
+    "Networking": "network|protocol|tcp|udp|ip|latency|throughput|packet|routing"
+  }
+}
