@@ -144,6 +144,27 @@ def make_question_from_sentence_heuristic(sent: str, preferred_bloom: str | None
     return f"{verb} a concept related to {topic_words}."
 
 
+# ------------------------------ Optional file OCR/Parsing ------------------------------
+_PYPDF2_AVAILABLE = False
+_PIL_AVAILABLE = False
+_TESSERACT_AVAILABLE = False
+try:
+    import PyPDF2  # type: ignore
+    _PYPDF2_AVAILABLE = True
+except Exception:
+    _PYPDF2_AVAILABLE = False
+try:
+    from PIL import Image  # type: ignore
+    _PIL_AVAILABLE = True
+except Exception:
+    _PIL_AVAILABLE = False
+try:
+    import pytesseract  # type: ignore
+    _TESSERACT_AVAILABLE = True
+except Exception:
+    _TESSERACT_AVAILABLE = False
+
+
 # ------------------------------ Optional ML Pipelines ------------------------------
 
 _cls_pipeline = None
@@ -209,6 +230,21 @@ def dashboard():
 
 # ------------------------------------ APIs ------------------------------------
 
+def analyze_text_shared(q: str, use_ml: bool) -> dict:
+    """Shared analyzer for a single question text."""
+    if use_ml:
+        difficulty = predict_difficulty_ml(q)
+        bloom = classify_bloom_ml(q)
+    else:
+        difficulty = predict_difficulty_heuristic(q)
+        bloom = classify_bloom_heuristic(q)
+    return {
+        "text": q,
+        "difficulty": difficulty,
+        "bloom": bloom,
+        "readability": readability_score(q),
+    }
+
 @app.route("/api/analyze", methods=["POST"])
 def api_analyze():
     data = request.get_json(silent=True) or {}
@@ -219,25 +255,11 @@ def api_analyze():
     if use_ml:
         init_pipelines()
 
-    def analyze_text(q: str):
-        if use_ml:
-            difficulty = predict_difficulty_ml(q)
-            bloom = classify_bloom_ml(q)
-        else:
-            difficulty = predict_difficulty_heuristic(q)
-            bloom = classify_bloom_heuristic(q)
-        return {
-            "text": q,
-            "difficulty": difficulty,
-            "bloom": bloom,
-            "readability": readability_score(q),
-        }
-
     if question:
-        result = analyze_text(question)
+        result = analyze_text_shared(question, use_ml)
         return jsonify(result)
     elif questions and isinstance(questions, list):
-        results = [analyze_text(q) for q in questions if isinstance(q, str) and q.strip()]
+        results = [analyze_text_shared(q, use_ml) for q in questions if isinstance(q, str) and q.strip()]
         diff_counts = Counter(r["difficulty"] for r in results)
         bloom_counts = Counter(r["bloom"] for r in results)
         return jsonify({
@@ -249,6 +271,83 @@ def api_analyze():
         })
     else:
         return jsonify({"error": "Provide 'question' or 'questions' in JSON"}), 400
+
+
+def _extract_text_from_pdf(file_storage) -> str:
+    if not _PYPDF2_AVAILABLE:
+        raise RuntimeError("PyPDF2 not installed; cannot parse PDFs. Add PyPDF2 to requirements and reinstall.")
+    reader = PyPDF2.PdfReader(file_storage)
+    texts = []
+    for page in reader.pages:
+        try:
+            texts.append(page.extract_text() or "")
+        except Exception:
+            continue
+    return "\n".join([t.strip() for t in texts if t and t.strip()])
+
+
+def _extract_text_from_image(file_storage) -> str:
+    if not (_PIL_AVAILABLE and _TESSERACT_AVAILABLE):
+        raise RuntimeError("Pillow or pytesseract not installed. Install Pillow and pytesseract, and ensure Tesseract OCR is available on system PATH.")
+    # Allow configuring Tesseract binary path via env (useful on Windows)
+    tcmd = os.environ.get("TESSERACT_CMD")
+    if tcmd:
+        try:
+            pytesseract.pytesseract.tesseract_cmd = tcmd  # type: ignore
+        except Exception:
+            pass
+    img = Image.open(file_storage)
+    text = pytesseract.image_to_string(img)
+    return text or ""
+
+
+@app.route("/api/analyze_file", methods=["POST"])
+def api_analyze_file():
+    """Accepts an uploaded PDF or image, extracts text, and analyzes questions.
+
+    Returns a structure similar to /api/analyze with multiple results and summary.
+    """
+    f = request.files.get("file")
+    if not f:
+        return jsonify({"error": "No file provided. Use form field 'file'."}), 400
+
+    filename = (f.filename or "").lower()
+    try:
+        if filename.endswith(".pdf"):
+            text = _extract_text_from_pdf(f.stream)
+        else:
+            # Assume image
+            text = _extract_text_from_image(f.stream)
+    except Exception as e:
+        return jsonify({"error": f"Failed to extract text: {e}"}), 400
+
+    # Split extracted text into candidate questions (simple heuristic)
+    # Split by newlines and ask-lines that end with '?' or are reasonably long statements.
+    lines = [ln.strip() for ln in re.split(r"\r?\n+", text) if ln.strip()]
+    candidates: list[str] = []
+    for ln in lines:
+        if ln.endswith("?"):
+            candidates.append(ln)
+        elif len(ln) > 40:  # likely a prompt sentence
+            candidates.append(ln)
+
+    if not candidates:
+        return jsonify({"results": [], "summary": {"difficulty": {}, "bloom": {}}, "note": "No candidate questions detected in file."})
+
+    use_ml = os.environ.get("USE_ML", "false").lower() in ("1", "true", "yes")
+    if use_ml:
+        init_pipelines()
+
+    results = [analyze_text_shared(q, use_ml) for q in candidates]
+    diff_counts = Counter(r["difficulty"] for r in results)
+    bloom_counts = Counter(r["bloom"] for r in results)
+    return jsonify({
+        "results": results,
+        "summary": {
+            "difficulty": diff_counts,
+            "bloom": bloom_counts,
+        }
+    })
 
 
 @app.route("/api/generate", methods=["POST"])
